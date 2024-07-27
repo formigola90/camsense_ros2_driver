@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"> 
+
+  <link name="lidar">
+    <visual>
+      <geometry>
+        <cylinder length="0.025" radius="0.032"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0 0 0" xyz=" 0 0 0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.095 0.07 0.02"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0 0 0" xyz="-0.0155 0 -0.0215"/>
+    </visual>
+  </link>
+  
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar"/>
+    <origin xyz="-0.052 -0.2 0.0325"/>
+  </joint>
+  
+</robot>
