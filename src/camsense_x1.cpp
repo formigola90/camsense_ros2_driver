@@ -11,11 +11,11 @@
 CamsenseX1::CamsenseX1(const std::string &name, rclcpp::NodeOptions const &options)
   : Node(name, options),
     port_("/dev/ttyUSB0"),
+    frame_id_("laser"),
     baud_rate_(115200),
-    offset_(0.0),
-    serial_(io_, port_),
     shutting_down_(false),
-    frame_id_("laser")
+    serial_(io_, port_),
+    offset_(0.0)
 {
   serial_.set_option(boost::asio::serial_port_base::baud_rate(baud_rate_));
   scan_pub_ = this->create_publisher<sensor_msgs::msg::LaserScan>("/scan", 1000);
@@ -44,6 +44,7 @@ CamsenseX1::CamsenseX1(const std::string &name, rclcpp::NodeOptions const &optio
         scan.intensities[i] =  this->qualityArray[i];
       }
       scan.time_increment = 1.0 / this->getRotationSpeed() / 400;
+      scan.header.stamp = now();  // <-- set timestamp here, for every scan
       scan_pub_->publish(scan);
 
       rpmsMsg.data = this->getRotationSpeed();
